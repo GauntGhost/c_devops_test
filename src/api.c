@@ -128,10 +128,11 @@ tApiError api_add_person_geolocation(tApiData* data, tDateTime date, const char*
 
     if (data) {
         
-        if (population_find(data->population, document) != -1) {
+        if (population_find(data->population, document) == -1) return E_PERSON_NOT_FOUND;
+		
 
-            // If the list is empty, create a new temporal node and add it to the linked list
-            if (!data->temporal_node) {
+        // If the list is empty, create a new temporal node and add it to the linked list
+        if (!data->temporal_node) {
                 tTemporalNode* temporal_node = (tTemporalNode*) malloc(sizeof(tTemporalNode));
                 if (temporal_node) {
                     temporalNode_init(temporal_node);
@@ -183,9 +184,7 @@ tApiError api_add_person_geolocation(tApiData* data, tDateTime date, const char*
                 } else {
                     return E_MEMORY_ERROR;
                 }
-            }
-        } else {
-            return E_PERSON_NOT_FOUND;
+            }              
         }
     } else {
         return E_MEMORY_ERROR;
